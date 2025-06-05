@@ -1,3 +1,6 @@
+//go:build go1.21
+// +build go1.21
+
 /*
  * Copyright 2021 ByteDance Inc.
  *
@@ -13,9 +16,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-//go:build go1.21
-// +build go1.21
 
 package rt
 
@@ -42,12 +42,14 @@ func Get64(v []byte) int64 {
 }
 
 // Mem2Str uses Go 1.20+ unsafe.String and unsafe.SliceData for cross-platform, zero-copy string to []byte.
+//
 //go:nosplit
 func Mem2Str(v []byte) (s string) {
 	return unsafe.String(unsafe.SliceData(v), len(v))
 }
 
 // Str2Mem uses Go 1.20+ unsafe.Slice for cross-platform, zero-copy, zero-copy []byte to string
+//
 //go:nosplit
 func Str2Mem(s string) (v []byte) {
 	return unsafe.Slice(unsafe.StringData(s), len(s))
@@ -115,12 +117,14 @@ func Ptr2SlicePtr(s unsafe.Pointer, l int, c int) unsafe.Pointer {
 }
 
 // StrPtr uses Go 1.20+ unsafe.StringData to get the pointer to the string's underlying data.
+//
 //go:nosplit
 func StrPtr(s string) unsafe.Pointer {
 	return unsafe.Pointer(unsafe.StringData(s))
 }
 
 // StrFrom uses Go 1.20+ unsafe.String for cross-platform, zero-copy string construction.
+//
 //go:nosplit
 func StrFrom(p unsafe.Pointer, n int64) (s string) {
 	return unsafe.String((*byte)(p), int(n))
